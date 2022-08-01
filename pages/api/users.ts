@@ -1,13 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { DefaultMsgResponse } from '../../types/DefaulMsgResponse';
-import { UserModel } from '../../models/userModel';
+import { UserModel } from '../../models/UserModel';
 import { connect } from '../../middlewares/connectMongoDB';
+import { UserRequest } from '../../types/UserRequest';
 
-interface BodyPayload {
-    name: string,
-    email: string,
-    password:string
-}
+import md5 from 'md5';
 
 const invalidMethod = (res: NextApiResponse) => res.status(405).json({ error: 'Metodo informado nao é permitido!' });
 
@@ -15,7 +12,7 @@ const validateName = (name: string) => !name || name.trim().length < 2;
 const validateEmail = (email: string) => !email || email.trim().length < 5 || !email.includes('@') || !email.includes('.');
 const validatePassword = (password: string) => !password || password.trim().length < 6;
 
-const validateBody = ({ name, email, password}: BodyPayload): string => {
+const validateBody = ({ name, email, password}: UserRequest): string => {
     if (validateName(name)) {
        return 'Nome não é válido'
     }
@@ -38,7 +35,7 @@ const registerEndpoint = async (
     try {
 
         if (req.method === 'POST') {
-            const { name, email, password }: BodyPayload = req.body;
+            const { name, email, password }: UserRequest = req.body;
 
             const errorMessage = validateBody({ name, email, password });
 
@@ -46,7 +43,7 @@ const registerEndpoint = async (
                 return res.status(400).json({ error: errorMessage })
             }
 
-            const user = { name, email, password }
+            const user = { name, email, password: md5(password) }
             await UserModel.create(user)
             return res.status(200).json({ msg: 'Usuario criado com sucesso!'})
         }

@@ -1,35 +1,46 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { DefaultMsgResponse } from '../../types/DefaulMsgResponse';
+import md5 from 'md5';
+import type {NextApiRequest, NextApiResponse} from 'next';
 import { connect } from '../../middlewares/connectMongoDB';
-import { UserModel } from '../../models/userModel';
+import { UserModel } from '../../models/UserModel';
+import { DefaultResponseMsg } from '../../types/DefaultResponseMsg';
+import { LoginRequest } from '../../types/LoginRequest';
+import jwt from 'jsonwebtoken';
+import { LoginResponse } from '../../types/LoginResponse';
 
-type Body = {
-    login: string
-    password: string
-}
+const loginEndpoint = async(req : NextApiRequest, 
+    res : NextApiResponse<DefaultResponseMsg | LoginResponse>) => {
 
-const loginWithSuccess = (res: NextApiResponse<DefaultMsgResponse>) => res.status(200).json({ msg: 'Login success' });
-const userOrPasswordInvalid = (res: NextApiResponse<DefaultMsgResponse>) => res.status(400).json({ error: 'Usuario ou senha inválido'});
-const invalidMethod = (res: NextApiResponse<DefaultMsgResponse>) => res.status(405).json({ error: 'Metodo informado nao é permitido!' });
+    const {MY_SECRET_KEY} = process.env;
+    if(!MY_SECRET_KEY){
+        return res.status(500).json({ error : "ENV Chave JWT não informada"});
+    }
+    
 
-const verifyUserAndPassword = async ({ login, password }: Body): boolean => {
-    const result = await UserModel.find({ login, password});
-    return !!result.length;
-}
+    if(req.method === 'POST'){
+        const body = req.body as LoginRequest;
+        if(!body || !body.login || !body.password){
+            return res.status(400).json({ error : 'Favor informar usuário e senha'});
+        }
+        console.log({ ...body, customPass: md5(body.password) })
+        const usersFound = await UserModel.find({ email : body.login, password : md5(body.password)});
+        console.log(usersFound)
+        if( usersFound && usersFound.length > 0 ){
+            const user = usersFound[0];
+            const token = jwt.sign({_id : user._id}, MY_SECRET_KEY);
+            
+            const result = {
+                name : user.name,
+                email : user.email,
+                token
+            }
 
-const loginEndpoint = async (
-  req: NextApiRequest,
-  res: NextApiResponse<DefaultMsgResponse>
-) => {
-    if (req.method === 'POST') {
-        const { login, password } = req.body;
+            return res.status(200).json(result);
+        }
 
-        return await verifyUserAndPassword({ login, password })
-            ? loginWithSuccess(res)
-            : userOrPasswordInvalid(res)
+        return res.status(400).json({ error : 'Usuário ou senha não encontrado'});
     }
 
-    return invalidMethod(res)
+    return res.status(405).json({ error : 'Metodo infomado não é valido'});
 }
 
 export default connect(loginEndpoint);

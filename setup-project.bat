@@ -7,3 +7,6 @@ cd C:\projects
 
 echo Clonando o projeto
 git clone https://github.com/leonardopaganelli/gerenciador-tarefas-next-87aoj.git
+
+echo Criando base
+mkdir C:\data\db\

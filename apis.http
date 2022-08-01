@@ -10,7 +10,34 @@ POST http://localhost:3000/api/users HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Leonardo Paganelli2",
-    "email": "leonardo.paganelli2@outlook.com",
+    "name": "Leonardo Paganelli",
+    "email": "leonardo.paganelli@outlook.com",
     "password": "123456"
 }
+
+POST http://localhost:3000/api/task HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmU4NWViZjIxZjc1ODJkOTQ4MGRmZTQiLCJpYXQiOjE2NTkzOTYzODl9.dn0FC7MIj7qVWnzdDM6o1pJdV4NVa13nxwjd5Iuab9o
+
+{
+    "name" : "Tarefa 1",
+    "previsionDate" : "2022-08-05"
+}
+
+GET http://localhost:3000/api/task HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmU4NWViZjIxZjc1ODJkOTQ4MGRmZTQiLCJpYXQiOjE2NTkzOTYzODl9.dn0FC7MIj7qVWnzdDM6o1pJdV4NVa13nxwjd5Iuab9o
+
+
+PUT  http://localhost:3000/api/task?id=62e8613321f7582d9480dfe8 HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmU4NWViZjIxZjc1ODJkOTQ4MGRmZTQiLCJpYXQiOjE2NTkzOTYzODl9.dn0FC7MIj7qVWnzdDM6o1pJdV4NVa13nxwjd5Iuab9o
+{
+    "name" : "Tarefa 1 nome novo",
+    "previsionDate" : "2022-08-05",
+    "finishDate" : "2022-08-04"
+}
+
+DELETE  http://localhost:3000/api/task?id=62e8613321f7582d9480dfe8 HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmU4NWViZjIxZjc1ODJkOTQ4MGRmZTQiLCJpYXQiOjE2NTkzOTYzODl9.dn0FC7MIj7qVWnzdDM6o1pJdV4NVa13nxwjd5Iuab9o

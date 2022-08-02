@@ -19,8 +19,7 @@
         input {
             width: 224px;
             font-size: 14px;
-            color: #ED1164;
-            border-bottom-color: #ED1164;
+            border-bottom-color: #91A3AD;
             letter-spacing: 0.01em;
             border-radius: 0;
             border-top-width: 0;
@@ -28,6 +27,21 @@
             border-left-width: 0;
             border-bottom-width: 1px;
             padding-bottom: 8px;
+            outline: none;
+            color: #91A3AD;
+
+            &:focus {
+                border-bottom-color: #ED1164;
+                color: #ED1164;
+
+                &::placeholder {
+                    color: #ED1164;
+                }
+            }
+
+            &::placeholder{
+                color: #91A3AD;
+            }
         }
     }
     button {

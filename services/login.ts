@@ -24,7 +24,7 @@ const login = async (
 ): Promise<loginServiceResponse> => {
   try {
     const loginResponse: loginResponse = await axios.post(
-      "http://localhost:3001/api/login ",
+      "http://localhost:3000/api/login ",
       {
         ...loginData,
       }

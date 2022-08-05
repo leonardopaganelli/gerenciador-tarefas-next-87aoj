@@ -1,56 +1,89 @@
-
 .container-login {
+  .logo {
+    width: 178.35px;
+    display: block;
+    margin: auto;
+    margin-bottom: 47px;
+  }
+
+  .input {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    position: relative;
+
+    > img {
+      width: 16px;
+      margin-right: 18px;
+    }
+    input {
+      width: 224px;
+      font-size: 14px;
+      border-bottom-color: #91a3ad;
+      letter-spacing: 0.01em;
+      border-radius: 0;
+      border-top-width: 0;
+      border-right-width: 0;
+      border-left-width: 0;
+      border-bottom-width: 1px;
+      padding-bottom: 8px;
+      outline: none;
+      color: #91a3ad;
+      padding-right: 26px;
+
+      &:focus {
+        border-bottom-color: #ed1164;
+        color: #ed1164;
+
+        &::placeholder {
+          color: #ed1164;
+        }
+      }
+
+      &::placeholder {
+        color: #91a3ad;
+      }
+    }
+    .olho {
+      background: none;
+      border: none;
+      padding: 0;
+      position: absolute;
+      right: 0;
+      top: 1px;
+    }
+  }
+  .login-button {
+    width: 100%;
+    height: 56px;
+    background-color: #ed1164;
+    color: white;
+    border-radius: 12px;
+    font-size: 16px;
+    margin-top: 30px;
+    border: none;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .container-login {
+    display: flex;
+    justify-content: space-evenly;
+
     .logo {
-        width: 178.35px;
-        display: block;
-        margin: auto;
-        margin-bottom: 47px;
+      margin: 0;
+      width: 520px;
     }
 
-    .input {
-        display: flex;
-        flex-direction: row;
-        padding: 10px;
-        
-        image {
-            width: 16px;
-            margin-right: 18px;
-        }
-        input {
-            width: 224px;
-            font-size: 14px;
-            border-bottom-color: #91A3AD;
-            letter-spacing: 0.01em;
-            border-radius: 0;
-            border-top-width: 0;
-            border-right-width: 0;
-            border-left-width: 0;
-            border-bottom-width: 1px;
-            padding-bottom: 8px;
-            outline: none;
-            color: #91A3AD;
+    form {
+      border: 1px solid #ed1164;
+      border-radius: 32px;
+      padding: 90px 54px;
+      margin-left: 136px;
 
-            &:focus {
-                border-bottom-color: #ED1164;
-                color: #ED1164;
-
-                &::placeholder {
-                    color: #ED1164;
-                }
-            }
-
-            &::placeholder{
-                color: #91A3AD;
-            }
-        }
+      .input input {
+        width: 343px;
+      }
     }
-    button {
-        width: 100%;
-        height: 56px;
-        background-color: #ED1164;
-        color: white;
-        border-radius: 12px;
-        font-size: 16px;
-        margin-top: 30px;
-    }
+  }
 }

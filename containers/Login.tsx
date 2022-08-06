@@ -1,37 +1,42 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-import React, { useContext, useState } from "react";
-import { loginService } from "../services";
+import React, { MouseEvent, useContext, useState } from "react";
+import { executeRequest } from "../services/apiService";
 import { AuthContext, AuthContextInterface } from "../providers/auth.provider";
 
 export const Login = () => {
   const { setUserAuth }: AuthContextInterface = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
 
-  const togglePassword = (event) => {
+  const togglePassword = (event: MouseEvent) => {
     event.preventDefault();
     setShowPassword(!showPassword);
   };
 
   const submitLogin = async (event: unknown) => {
-    event.preventDefault();
-    const formValues = {
-      login: event.target.email.value,
-      password: event.target.password.value,
-    };
+    try {
+      event.preventDefault();
+      const formValues = {
+        login: event.target.email.value,
+        password: event.target.password.value,
+      };
+  
+      const result = await executeRequest({
+        endpoint: "login",
+        method: "POST",
+        body: {
+          ...formValues
+        }
+      });
 
-    const result = await loginService(formValues);
-
-    if (result.error) {
-      alert(result.error);
-    } else {
       const { token, name } = result.data;
       setUserAuth({
         isLoggedIn: true,
         token,
         name,
       });
-      console.log(result);
+    } catch (error) {
+      console.log(error)
     }
   };
 

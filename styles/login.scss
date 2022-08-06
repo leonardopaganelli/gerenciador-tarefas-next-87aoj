@@ -1,3 +1,5 @@
+@import "./config.scss";
+
 .container-login {
   .logo {
     width: 178.35px;
@@ -32,11 +34,11 @@
       padding-right: 26px;
 
       &:focus {
-        border-bottom-color: #ed1164;
-        color: #ed1164;
+        border-bottom-color: $primaryColor;
+        color: $primaryColor;
 
         &::placeholder {
-          color: #ed1164;
+          color: $primaryColor;
         }
       }
 
@@ -56,7 +58,7 @@
   .login-button {
     width: 100%;
     height: 56px;
-    background-color: #ed1164;
+    background-color: $primaryColor;
     color: white;
     border-radius: 12px;
     font-size: 16px;
@@ -65,7 +67,7 @@
   }
 }
 
-@media only screen and (min-width: 1440px) {
+@media only screen and (min-width: 1200px) {
   .container-login {
     display: flex;
     justify-content: space-evenly;
@@ -76,14 +78,27 @@
     }
 
     form {
-      border: 1px solid #ed1164;
+      border: 1px solid $primaryColor;
       border-radius: 32px;
-      padding: 90px 54px;
+      padding: 80px 40px;
       margin-left: 136px;
 
-      .input input {
-        width: 343px;
+      .input {
+        padding-bottom: 15px;
+        img {
+          width: 24px;
+        }
+        input {
+          font-size: 16px;
+          width: 343px;
+        }
       }
+
+      .login-button {
+        height: 64px;
+        font-size: 18px;
+      }
+      
     }
   }
 }

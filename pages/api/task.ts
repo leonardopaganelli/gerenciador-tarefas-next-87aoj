@@ -10,6 +10,7 @@ import { GetTasksParams } from '../../types/GetTasksParams';
 const taskEndpoint = async (req: NextApiRequest, res: NextApiResponse<DefaultResponseMsg | any>) => {
 
     const { userId } = req?.body || req?.query;
+    console.log("Exemplo", {body: req?.body, req: req?.query, userId})
 
     switch (req.method) {
         case 'POST':

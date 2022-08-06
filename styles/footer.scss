@@ -1,0 +1,27 @@
+@import "./config.scss";
+
+.footer {
+    bottom: 0;
+
+    span {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 19px 0;
+        border-top: 1px solid #91A3AD26;
+
+        button.button {
+            display: none;
+        }
+        > span {
+            display: block;
+            color: $primaryColor;
+        }
+    }
+}

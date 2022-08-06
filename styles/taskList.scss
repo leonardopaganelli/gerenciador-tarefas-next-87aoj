@@ -1,0 +1,54 @@
+
+  .task-list {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 0 0;
+    max-height: calc(100vh - 238px);
+    height: calc(100vh - 238px);
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-snap-align: start;
+    scroll-snap-points-y: repeat(70px);
+
+    li {
+      scroll-snap-align: start;
+    }
+    li:not(:first-child) {
+      margin-top: 8px;
+    }
+
+    .task-text {
+      display: flex;
+      flex-flow: column;
+      align-items: flex-start;
+      margin-left: 16px;
+      color: #575757;
+
+      .task-description {
+        font-weight: 500;
+        font-size: 14px;
+      }
+      .task-conclusion {
+        margin-top: 10px;
+        font-size: 12px;
+      }
+    }
+  }
+
+  .empty-list {
+    height: calc(100vh - 215px);
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    align-items: center;
+    color: $primaryColor;
+    font-weight: 600;
+    font-size: 14px;
+
+    .not-found {
+      width: 245px;
+    }
+    &-text {
+      margin-top: 12px;
+    }
+  }

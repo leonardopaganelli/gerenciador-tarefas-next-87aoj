@@ -1,0 +1,47 @@
+@import "./config.scss";
+
+.filter-container {
+    margin: 16px 8px 0 8px;
+    
+    .filter {
+        font-size: 18px;
+        font-weight: 600;
+        justify-content: space-between;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        width: -webkit-fill-available;
+        background: #91a3ad26;
+        color: $primaryColor;
+        border: none;
+        outline: inherit;
+        line-height: 16px;
+        border-radius: 12px;
+    }
+
+    button.filter {
+        margin: 0;
+    }
+
+    section.filter {
+        display: none;
+
+        .input-container { 
+            font-weight: 400px;
+            font-size: 12px;
+            display: flex;
+        } 
+    }
+}
+
+
+@media only screen and (min-width: 1200px) {
+    .filter-container {
+        button.filter {
+            display: none;
+        }
+        section.filter {
+            display: flex;
+        }
+    } 
+}

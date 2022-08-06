@@ -6,6 +6,7 @@ import { DefaultResponseMsg } from "../../types/DefaultResponseMsg";
 import { LoginRequest } from "../../types/LoginRequest";
 import jwt from "jsonwebtoken";
 import { LoginResponse } from "../../types/LoginResponse";
+import { corsPolicy } from "../../middlewares/corsMid";
 
 const loginEndpoint = async (
   req: NextApiRequest,
@@ -45,4 +46,4 @@ const loginEndpoint = async (
   return res.status(405).json({ error: "Metodo infomado não é valido" });
 };
 
-export default connect(loginEndpoint);
+export default corsPolicy(connect(loginEndpoint));

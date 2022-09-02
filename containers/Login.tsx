@@ -20,13 +20,13 @@ export const Login = () => {
         login: event.target.email.value,
         password: event.target.password.value,
       };
-  
+
       const result = await executeRequest({
         endpoint: "login",
         method: "POST",
         body: {
-          ...formValues
-        }
+          ...formValues,
+        },
       });
 
       const { token, name } = result.data;
@@ -36,7 +36,7 @@ export const Login = () => {
         name,
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 

@@ -1,27 +1,46 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
 import Modal from 'react-bootstrap/Modal';
+import { getTaskInputInterface } from "../services/task";
 
-export const Filter = () => {
+export const Filter = ({ applyFilter }: {applyFilter: (data: getTaskInputInterface) => void}) => {
     const [filterModalShow, setFilterTaskModalShow] = useState(false);
 
     const submitFilter = (event) => {
         event.preventDefault();
+        const formValues: getTaskInputInterface = {
+            previsionDateStart: event?.target?.initDate?.value,
+            previsionDateEnd: event?.target?.endDate?.value,
+            status: event?.target?.option?.value,
+          };
+        console.log(
+            "submite filter",
+            {
+                formValues,
+                event,
+                target: event?.target,
+                option: event?.target?.option,
+                value: event?.target?.option?.value || "0"
+            }
+        );
+
+        applyFilter(formValues);
+        setFilterTaskModalShow(false);
     }
 
     const options = [
         {
-            value: "T",
+            value: "0",
             text: "Todas"
         },
         
         {
-            value: "A",
+            value: "1",
             text: "Ativas"
         },
         
         {
-            value: "C",
+            value: "2",
             text: "Concluídas"
         }
     ]
@@ -45,23 +64,23 @@ export const Filter = () => {
             </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-            <div onSubmit={submitFilter}>
-                <div className="inputs">
-                <input type="date" name="date" placeholder="Data de conclusão" />
-                <input type="date" name="date" placeholder="Data de conclusão" />
-                <select name="option">
-                    { optionsComponent(options) }
-                </select>
-                </div>
-                <div className="buttons">
-                <button className="salvar">
-                    Aplicar Filtros
-                </button>
-                <button onClick={() => setFilterTaskModalShow(false)} className="salvar">
-                    Cancelar
-                </button>
-                </div>
-            </div>
+                <form onSubmit={submitFilter}>
+                    <div className="inputs">
+                    <input type="date" name="initDate" placeholder="Data de início" />
+                    <input type="date" name="endDate" placeholder="Data de conclusão" />
+                    <select name="option">
+                        { optionsComponent(options) }
+                    </select>
+                    </div>
+                    <div className="buttons">
+                    <button className="salvar">
+                        Aplicar Filtros
+                    </button>
+                    <button onClick={() => setFilterTaskModalShow(false)} className="salvar">
+                        Cancelar
+                    </button>
+                    </div>
+                </form>
             </Modal.Body>
         </Modal>
 

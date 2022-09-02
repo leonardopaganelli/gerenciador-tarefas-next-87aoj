@@ -7,6 +7,7 @@ import {
   taskData,
   addTask,
   createTaskInputInterface,
+  getTaskInputInterface
 } from "../services/task";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
@@ -18,6 +19,9 @@ export const Main = () => {
   const [addModalShow, setAddTaskModalShow] = useState(false);
 
   const [taskList, setTaskList] = useState([] as taskData[]);
+  const [filterParams, setFilterParams] = useState({
+    status: "0"
+  } as getTaskInputInterface)
 
   const convertDate = (date: string): string => {
     return new Date(date)
@@ -29,7 +33,7 @@ export const Main = () => {
   };
 
   const fetchTaskList = async () => {
-    const { data } = await getTaskList();
+    const { data } = await getTaskList(filterParams);
 
     const taskListMapped = data?.map((singleTask) => ({
       ...singleTask,
@@ -64,7 +68,11 @@ export const Main = () => {
     <div className="container-main">
       <Header addTaskCallback={() => setAddTaskModalShow(true)} />
       <div>
-        <Filter />
+        <Filter applyFilter={(data: getTaskInputInterface) => {
+          setFilterParams(data)
+          console.log("setFilterParams", data)
+          fetchTaskList();
+          }}/>
         <TaskList list={taskList} />
       </div>
 
@@ -76,6 +84,7 @@ export const Main = () => {
         onHide={() => {
           setAddTaskModalShow(false);
         }}
+        className="container-modal"
       >
         <Modal.Header closeButton>
           <Modal.Title>Adicionar uma tarefa</Modal.Title>

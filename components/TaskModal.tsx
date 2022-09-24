@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { Task } from "../types/Task";
+import { verifyNullOrEmpty } from "../util/verifyNullOrEmpty";
 
 interface TaskModal {
   addTaskCallback: (event: Task) => void;
@@ -58,8 +59,6 @@ export const TaskModal = ({
       setTaskToEdit();
     }
   }, [isEditing]);
-
-  const verifyNullOrEmpty = (value: string): boolean => !value || !value.length;
 
   const validateForm = () => {
     const fieldToValidate = [name, modalPrevisionDateStart];

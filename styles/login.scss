@@ -8,6 +8,12 @@
     margin-bottom: 47px;
   }
 
+  p {
+    text-align: center;
+    color: $errorColor;
+    font-weight: bold;
+  }
+
   .input {
     display: flex;
     flex-direction: row;
@@ -83,6 +89,10 @@
       padding: 80px 40px;
       margin-left: 136px;
 
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
       .input {
         padding-bottom: 15px;
         img {
@@ -98,7 +108,6 @@
         height: 64px;
         font-size: 18px;
       }
-      
     }
   }
 }

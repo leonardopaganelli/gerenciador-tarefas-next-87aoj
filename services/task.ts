@@ -34,11 +34,6 @@ const getTaskList = async ({
   previsionDateStart,
   previsionDateEnd,
 }: getTaskInputInterface): Promise<taskListServiceResponse> => {
-  console.log("Fetching with params", {
-    status,
-    previsionDateStart,
-    previsionDateEnd,
-  });
   try {
     let query = `?status=${status}`;
 

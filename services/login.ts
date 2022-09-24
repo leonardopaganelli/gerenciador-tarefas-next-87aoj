@@ -32,7 +32,6 @@ const login = async (
 
     return { data: loginResponse.data };
   } catch (error) {
-    console.log(error);
     return {
       error: error?.response?.data?.error,
     };

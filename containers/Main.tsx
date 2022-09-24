@@ -1,36 +1,39 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import Modal from "react-bootstrap/Modal";
-import task from "../pages/api/task";
-import { AuthContext, AuthContextInterface } from "../providers/auth.provider";
+import React, { useEffect, useRef, useState } from "react";
 import {
   getTaskList,
-  taskData,
   addTask,
+  editTask,
   createTaskInputInterface,
-  getTaskInputInterface
+  getTaskInputInterface,
 } from "../services/task";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { TaskList } from "../components/TaskList";
 import { Filter } from "../components/Filter";
+import { TaskModal } from "../components/TaskModal";
+import { Task } from "../types/Task";
+import { compareObjects } from "../util/compareObjects";
 
 export const Main = () => {
-  const effectRan = useRef(false);
-  const [addModalShow, setAddTaskModalShow] = useState(false);
-
-  const [taskList, setTaskList] = useState([] as taskData[]);
+  const [showModal, setModalShow] = useState(false);
+  const [taskList, setTaskList] = useState([] as Task[]);
   const [filterParams, setFilterParams] = useState({
-    status: "0"
-  } as getTaskInputInterface)
+    status: "0",
+    previsionDateStart: "",
+    previsionDateEnd: "",
+  } as getTaskInputInterface);
+  const [customError, setCustomError] = useState("");
+  const [taskToEdit, setTaskToEdit] = useState({} as Task);
 
-  const convertDate = (date: string): string => {
-    return new Date(date)
-      .toISOString()
-      .substr(0, 10)
-      .split("-")
-      .reverse()
-      .join("/");
-  };
+  const convertDate = (date: string): string =>
+    date
+      ? new Date(date)
+          .toISOString()
+          .substr(0, 10)
+          .split("-")
+          .reverse()
+          .join("/")
+      : "";
 
   const fetchTaskList = async () => {
     const { data } = await getTaskList(filterParams);
@@ -38,80 +41,78 @@ export const Main = () => {
     const taskListMapped = data?.map((singleTask) => ({
       ...singleTask,
       previsionDate: convertDate(singleTask.previsionDate),
+      finishDate: convertDate(singleTask.finishDate || ""),
     }));
-    setTaskList(taskListMapped as taskData[]);
+    setTaskList(taskListMapped as Task[]);
   };
 
   useEffect(() => {
-    if (effectRan.current === true) {
+    fetchTaskList();
+  }, [filterParams]);
+
+  const addNewTask = async (task: createTaskInputInterface) => {
+    try {
+      await addTask(task);
+      setModalShow(false);
+      setCustomError("");
       fetchTaskList();
+    } catch (e: any) {
+      if (e) {
+        setCustomError(e);
+      } else {
+        setCustomError("Ocorreu erro ao tentar cadastrar tarefa");
+      }
     }
+  };
 
-    return () => {
-      effectRan.current = true;
-    };
-  }, []);
-
-  const submitAddTask = async (event: unknown) => {
-    event.preventDefault();
-    console.log(event);
-    const formValues: createTaskInputInterface = {
-      name: event?.target?.name?.value,
-      previsionDate: event?.target?.date?.value,
-    };
-    console.log(formValues);
-    const data = await addTask(formValues);
-    console.log(data);
+  const editCurrentTask = async (task: Task) => {
+    try {
+      await editTask(task);
+      setModalShow(false);
+      setCustomError("");
+      setTaskToEdit({} as Task);
+      fetchTaskList();
+    } catch (e: any) {
+      if (e) {
+        setCustomError(e);
+      } else {
+        setCustomError("Ocorreu erro ao tentar cadastrar tarefa");
+      }
+    }
   };
 
   return (
     <div className="container-main">
-      <Header addTaskCallback={() => setAddTaskModalShow(true)} />
+      <Header addTaskCallback={() => setModalShow(true)} />
       <div>
-        <Filter applyFilter={(data: getTaskInputInterface) => {
-          setFilterParams(data)
-          console.log("setFilterParams", data)
-          fetchTaskList();
-          }}/>
-        <TaskList list={taskList} />
+        <Filter
+          applyFilter={(params) => {
+            if (!compareObjects(params, filterParams)) {
+              setFilterParams(params);
+            }
+          }}
+        />
+        <TaskList
+          list={taskList}
+          selectItem={(item) => {
+            setTaskToEdit(item);
+            setModalShow(true);
+          }}
+        />
       </div>
-
-      <Modal
-        show={addModalShow}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-        onHide={() => {
-          setAddTaskModalShow(false);
+      <TaskModal
+        addTaskCallback={addNewTask}
+        editTaskCallback={editCurrentTask}
+        closeModalCallback={() => {
+          setModalShow(false);
+          setCustomError("");
+          setTaskToEdit({} as Task);
         }}
-        className="container-modal"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Adicionar uma tarefa</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form onSubmit={submitAddTask}>
-            <div className="inputs">
-              <input
-                type="text"
-                name="name"
-                placeholder="Adicionar uma tarefa"
-              />
-              <input type="date" name="date" placeholder="Data de conclusão" />
-            </div>
-            <div className="buttons">
-              <button className="salvar">Salvar</button>
-              <button
-                onClick={() => setAddTaskModalShow(false)}
-                className="salvar"
-              >
-                Cancelar
-              </button>
-            </div>
-          </form>
-        </Modal.Body>
-      </Modal>
-      <Footer addTaskCallback={() => setAddTaskModalShow(true)} />
+        taskToEdit={taskToEdit}
+        customError={customError}
+        showModal={showModal}
+      />
+      <Footer addTaskCallback={() => setModalShow(true)} />
     </div>
   );
 };

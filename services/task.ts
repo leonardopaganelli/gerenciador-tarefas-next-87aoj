@@ -1,18 +1,8 @@
 import axios from "axios";
-
-interface loginInterface {
-  login: string;
-  password: string;
-}
-
-interface taskData {
-  _id: string;
-  name: string;
-  previsionDate: string;
-}
+import { Task } from "../types/Task";
 
 interface taskListResponseInterface {
-  data: taskData[];
+  data: Task[];
 }
 
 interface createTaskInputInterface {
@@ -20,6 +10,11 @@ interface createTaskInputInterface {
   previsionDate: string;
 }
 
+interface editTaskInputInterface {
+  name: string;
+  previsionDate: string;
+  endDate: string;
+}
 interface getTaskInputInterface {
   status: string;
   previsionDateStart?: string;
@@ -31,19 +26,28 @@ interface createTaskResponseInterface {
 }
 
 interface taskListServiceResponse {
-  data?: taskData[];
+  data?: Task[];
   error?: string;
 }
-const getTaskList = async ({status = "0", previsionDateStart, previsionDateEnd }: getTaskInputInterface): Promise<taskListServiceResponse> => {
+const getTaskList = async ({
+  status,
+  previsionDateStart,
+  previsionDateEnd,
+}: getTaskInputInterface): Promise<taskListServiceResponse> => {
+  console.log("Fetching with params", {
+    status,
+    previsionDateStart,
+    previsionDateEnd,
+  });
   try {
-    let query = `?status=${status}`
+    let query = `?status=${status}`;
 
     if (previsionDateStart) {
-      query += `&previsionDateStart=${previsionDateStart}`
+      query += `&previsionDateStart=${previsionDateStart}`;
     }
 
     if (previsionDateEnd) {
-      query += `&previsionDateEnd=${previsionDateEnd}`
+      query += `&previsionDateEnd=${previsionDateEnd}`;
     }
 
     const token = localStorage.getItem("token");
@@ -57,21 +61,39 @@ const getTaskList = async ({status = "0", previsionDateStart, previsionDateEnd }
     );
 
     return { data: taskListResponse.data };
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
     return {
       error: error?.response?.data?.error,
     };
   }
 };
 
-const addTask = async (
-  taskToAdd: createTaskInputInterface
-): Promise<unknown> => {
+const addTask = async (taskToEdit: Task): Promise<unknown> => {
   try {
     const token = localStorage.getItem("token");
     const createTaskResponse: createTaskResponseInterface = await axios.post(
       "http://localhost:3000/api/task",
+      {
+        ...taskToEdit,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return { data: createTaskResponse.data };
+  } catch (error: any) {
+    throw error?.response?.data?.error;
+  }
+};
+
+const editTask = async (taskToAdd: Task): Promise<unknown> => {
+  try {
+    const token = localStorage.getItem("token");
+    const createTaskResponse: createTaskResponseInterface = await axios.put(
+      `http://localhost:3000/api/task?id=${taskToAdd._id}`,
       {
         ...taskToAdd,
       },
@@ -83,13 +105,10 @@ const addTask = async (
     );
 
     return { data: createTaskResponse.data };
-  } catch (error) {
-    console.log(error);
-    return {
-      error: error?.response?.data?.error,
-    };
+  } catch (error: any) {
+    throw error?.response?.data?.error;
   }
 };
 
-export { getTaskList, addTask };
-export type { taskData, createTaskInputInterface, getTaskInputInterface };
+export { getTaskList, addTask, editTask };
+export type { createTaskInputInterface, getTaskInputInterface };

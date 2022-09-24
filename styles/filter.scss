@@ -1,47 +1,71 @@
 @import "./config.scss";
 
 .filter-container {
-    margin: 16px 8px 0 8px;
-    
-    .filter {
-        font-size: 18px;
-        font-weight: 600;
-        justify-content: space-between;
-        padding: 14px 16px;
-        display: flex;
-        align-items: center;
-        width: -webkit-fill-available;
-        background: #91a3ad26;
-        color: $primaryColor;
-        border: none;
-        outline: inherit;
-        line-height: 16px;
-        border-radius: 12px;
-    }
+  margin: 16px 8px 0 8px;
 
-    button.filter {
-        margin: 0;
-    }
+  .filter {
+    font-size: 18px;
+    font-weight: 600;
+    justify-content: space-between;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    width: -webkit-fill-available;
+    background: #91a3ad26;
+    color: $primaryColor;
+    border: none;
+    outline: inherit;
+    line-height: 16px;
+    border-radius: 12px;
+  }
 
-    section.filter {
-        display: none;
+  button.filter {
+    margin: 0;
+  }
 
-        .input-container { 
-            font-weight: 400px;
-            font-size: 12px;
-            display: flex;
-        } 
+  section.filter {
+    display: none;
+
+    .input-container {
+      font-weight: 400px;
+      font-size: 12px;
+      display: flex;
+
+      div {
+        margin-left: 8px;
+
+        label {
+          margin-right: 8px;
+          font-size: 16px;
+          font-weight: 400;
+        }
+
+        select {
+          padding: 2px 5px;
+        }
+
+        &:last-child {
+          margin-left: 12px;
+          border-left: 1px solid $primaryColor;
+
+          label {
+            margin-left: 16px;
+          }
+        }
+      }
     }
+  }
 }
 
-
 @media only screen and (min-width: 1200px) {
-    .filter-container {
-        button.filter {
-            display: none;
-        }
-        section.filter {
-            display: flex;
-        }
-    } 
+  .filter-container {
+    margin: 16px 112px 0 112px;
+
+    button.filter {
+      display: none;
+    }
+    section.filter {
+      display: flex;
+    }
+  }
 }

@@ -14,6 +14,7 @@ html {
 
   body {
     height: 100%;
+    font-family: "Biennale Regular";
 
     #__next {
       height: 100%;
@@ -35,9 +36,10 @@ html {
 @import "./footer.scss";
 @import "./taskList.scss";
 @import "./filter.scss";
+@import "./modal.scss";
 
-
-input, select {
+input,
+select {
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
@@ -45,7 +47,7 @@ input, select {
   color: $primaryColor;
   min-width: 180px;
   background-color: transparent;
-  font-family: 'Biennale Regular';
+  font-family: "Biennale Regular";
 
   border-top-width: 0px;
   border-left-width: 0px;
@@ -59,31 +61,32 @@ input, select {
   cursor: pointer;
 
   &:focus {
-      border-color: $primaryColor;
+    border-color: $primaryColor;
   }
 
   &::placeholder {
-      color: $mediumGreyColor;
-      opacity: 1;
+    color: $mediumGreyColor;
+    opacity: 1;
   }
 
   &:-ms-input-placeholder {
-      color: $mediumGreyColor;
+    color: $mediumGreyColor;
   }
 
   &::-ms-input-placeholder {
-      color: $mediumGreyColor;
+    color: $mediumGreyColor;
   }
 }
 
-@media screen and (min-width:1024px) {
-  input, select {
-      border-top-width: 1px;
-      border-left-width: 1px;
-      border-right-width: 1px;
-      border-bottom-width: 1px;
-      border-radius: 8px;
-      padding: 5px;
-      outline: none;
+@media screen and (min-width: 1024px) {
+  input,
+  select {
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-radius: 8px;
+    padding: 5px;
+    outline: none;
   }
 }
